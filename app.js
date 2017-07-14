@@ -1,3 +1,5 @@
+"use strict";
+
 document.getElementById('issueInputForm').addEventListener('submit', saveIssue);
 
 function saveIssue(e) {
@@ -48,10 +50,10 @@ function setStatusClosed(id) {
   fetchIssues();
 };
 
-
+// delete an issue upon button click 
 function deleteIssue(id) {
   var issues = JSON.parse(localStorage.getItem('issues'));
-
+// loop through array, if id matches, remove 
   for (var i = 0; i < issues.length; i++) {
     if (issues[i].id == id) {
       issues.splice(i, 1);
@@ -64,6 +66,19 @@ function deleteIssue(id) {
 };
 
 
+function editIssue(id) {
+  var issues = JSON.parse(localStorage.getItem('issues'));
+
+  for (var i = 0; i < issues.length; i++) {
+    if (issues[i].id == id) {
+      issues.splice(i, 1);
+    }
+  }
+
+  localStorage.setItem('issues', JSON.stringify(issues));
+
+  fetchIssues();
+};
 function fetchIssues() {
   var issues = JSON.parse(localStorage.getItem('issues'));
   var issuesListe = document.getElementById('issuesList');
@@ -76,15 +91,22 @@ function fetchIssues() {
     var severity = issues[i].severity;
     var assignedTo = issues[i].assignedTo;
     var status = issues[i].status;
-
+    window.buttonId = id;
     issuesList.innerHTML +=   '<div class="well">'+
                               '<h6>Issue ID: ' + id + '</h6>'+
                               '<p><span class="label label-info">' + status + '</span></p>'+
                               '<h3>' + descprip + '</h3>'+
                               '<p><span class="glyphicon glyphicon-time"></span> ' + severity + '</p>'+
                               '<p><span class="glyphicon glyphicon-user"></span> ' + assignedTo + '</p>'+
-                              '<a href="#" onclick="setStatusClosed(\''+id+'\')" class="btn btn-warning">Close</a> '+
-                              '<a href="#" onclick="deleteIssue(\''+id+'\')" class="btn btn-danger">Delete</a>'+
+                              '<a href="#" onclick="setStatusClosed(\''+id+'\')" class="btn btn-warning">Close</a>  '+
+                              '<a href="#" onclick="deleteIssue(\''+id+'\')" class="btn btn-danger">Delete</a>  '+                                                     
+                              '<a href="#" onclick="respondToIssue(\''+id+'\')" class="btn btn-success" id=response\''+id+'">Respond</a>'+
                               '</div>';
   }
+};
+
+function editBtnTrials(){
+
+  console.log(this);
 }
+
